@@ -1,78 +1,68 @@
+import java.util.*;
 
-import java.util.Arrays;
-
-public class StackImplementationArray {
-     public static void main(String[] args) {
-          try {
-               Stack ss = new Stack(10);
-               System.out.println(ss.isEmpty());
-               ss.push(10);
-               ss.push(9);
-               ss.push(9);
-               ss.push(9);
-               ss.push(9);
-               ss.push(9);
-               ss.push(10);
-               ss.pop();
-               ss.push(12);
-               ss.push(10);
-               ss.push(10);
-               ss.push(10);
-               ss.pop();
-               System.out.println(ss.isEmpty());
-               ss.printStack();
-          } catch (Error e) {
-               System.out.println(e.getMessage());
-          }
-     }
+class StackImplementationArray{
+  public static void main(String[] args){
+    System.out.println("Hello World");
+    StackADT<Integer> st=new StackADT<>(3);
+    st.push(10);
+    st.push(20);
+    System.out.println(st.peek());
+    st.printStack();
+  }
 }
 
-class Stack {
-     int size;
-     int[] arr;
+class StackADT<T>{
+  private T[] arr;
+  private int top;
+  private int size;
+  
+  @SuppressWarnings("unchecked")
+  StackADT(int capacity){
+    if(capacity<=0){
+      throw new Error("Invalid Capacity to initialize stack");
+    }
+    this.top=-1;
+    this.size=capacity;
+    this.arr=(T[])new Object[capacity];//most imp line in Generic Stack
+    Arrays.fill(this.arr,null); 
+  }
 
-     int top = -1;
+  //push
+  public void push(T data){
+    if(top==size-1){
+      throw new Error("StackOverflow");
+    }
+    this.arr[top+1]=data;
+    top++;
+  }
 
-     Stack(int ss) {
-          if (ss <= 0) {
-               System.out.println("Cannot Create empty array , throwing err");
-               throw new Error("Invalid size for Stack");
-          }
-          this.size = ss;
-          this.arr = new int[ss];
-          Arrays.fill(arr, -1);
-     }
+  //pop
+  public T pop(){
+    if(top==-1){
+      throw new Error("StackUnderflow");
+    }
+    T val=this.arr[top];
+    this.arr[top]=null;
+    top--;
+    return val;
+  }
 
-     // push
-     public void push(int val) {
-          if (top + 1 == this.size) {
-               throw new Error("Stack OverFlow");
-          }
 
-          // put and push
-          this.arr[top + 1] = val;
-          top++;
-     }
+  //peek
+  public T peek(){
+    if(top==-1){
+      throw new Error("StackUnderflow");
+    }
+    return this.arr[top];
+  }
 
-     // pop
-
-     public void pop() {
-          if (top == -1) {
-               throw new Error("Stack UnderFlow");
-          }
-
-          // remove val
-          arr[top] = -1;
-          top--;
-     }
-
-     public void printStack() {
-          for (int x : this.arr) {
-               System.out.println(x == -1 ? "Empty pos" : "Val: " + x);
-          }
-     }
-
-     public boolean isEmpty() {
-          return top == -1;
-     }
+  //isEmpty
+  public boolean isEmpty(){
+    return top==-1;
+  }
+  public void printStack(){
+    for(T i: arr){
+      System.out.println(i==null ? "Empty pos":"Val is : "+i);
+    }
+  }
 }
